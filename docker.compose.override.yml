@@ -1,0 +1,75 @@
+version: "3.9"
+
+# ============================================================
+# docker-compose.override.yml — DEV ONLY overrides
+# Automatically merged by `docker compose up`.
+# Remove or rename this file for staging / prod.
+# ============================================================
+
+services:
+
+  # ── Mount source for live rebuild (if using Spring DevTools)
+  payment-service:
+    volumes:
+      - ./payment-service/target:/app/target:ro
+    environment:
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      LOGGING_LEVEL_COM_FINLEDGERX:    DEBUG
+
+  ledger-service:
+    volumes:
+      - ./ledger-service/target:/app/target:ro
+    environment:
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      LOGGING_LEVEL_COM_FINLEDGERX:    DEBUG
+
+  notification-service:
+    environment:
+      LOGGING_LEVEL_COM_FINLEDGERX:    DEBUG
+
+  reconciliation-service:
+    environment:
+      LOGGING_LEVEL_COM_FINLEDGERX:    DEBUG
+
+  # ── Kafka UI — handy during dev ──────────────────────────
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: finledgerx-kafka-ui
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_CLUSTERS_0_NAME:              finledgerx-local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS:  kafka:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY:    http://schema-registry:8081
+    ports:
+      - "8090:8080"
+    networks:
+      - finledgerx-backend
+
+  # ── Redis Insight — Redis GUI ───────────────────────────
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: finledgerx-redis-insight
+    restart: unless-stopped
+    ports:
+      - "5540:5540"
+    networks:
+      - finledgerx-data
+
+  # ── pgAdmin 4 — DB inspection during dev ────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: finledgerx-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    admin@finledgerx.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT:      5050
+    volumes:
+      - ./infra/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    ports:
+      - "5050:5050"
+    networks:
+      - finledgerx-data

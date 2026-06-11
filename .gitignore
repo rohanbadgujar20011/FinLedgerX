@@ -1,0 +1,51 @@
+# ── Secrets — NEVER commit ──────────────────────────────────
+.env
+*.env.local
+*.env.prod
+
+# ── Maven ─────────────────────────────────────────────────────
+**/target/
+**/!.mvn/wrapper/maven-wrapper.jar
+
+# ── Java ──────────────────────────────────────────────────────
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ── Spring Boot ───────────────────────────────────────────────
+**/spring-boot-*.jar
+
+# ── Docker generated ─────────────────────────────────────────
+**/.docker/
+
+# ── IDE ───────────────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ── OS ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Logs ─────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Node (React UI) ───────────────────────────────────────────
+**/node_modules/
+**/build/
+**/dist/
+
+# ── Grafana & Prometheus local data ───────────────────────────
+infra/grafana/data/
+infra/prometheus/data/
