@@ -77,17 +77,17 @@ public class PaymentController {
                 .body(result.payment());
     }
 
-//    // ── GET /api/v1/payments/{paymentId} ─────────────────────────
-//    /**
-//     * Retrieve a single payment by its ID.
-//     * Response is cached in Redis for 5 minutes (see RedisConfig).
-//     */
-//    @GetMapping("/{paymentId}")
-//    @Timed(value = "payment.api.get", description = "Time taken to fetch a payment")
-//    public ResponseEntity<PaymentResponse> getPayment(@PathVariable UUID paymentId) {
-//        log.debug("GET /api/v1/payments/{}", paymentId);
-//        return ResponseEntity.ok(paymentService.getPayment(paymentId));
-//    }
+    // ── GET /api/v1/payments/{paymentId} ─────────────────────────
+    /**
+     * Retrieve a single payment by its ID.
+     * Response is cached in Redis for 5 minutes (see RedisConfig).
+     */
+    @GetMapping("/{paymentId}")
+    @Timed(value = "payment.api.get", description = "Time taken to fetch a payment")
+    public ResponseEntity<PaymentResponse> getPayment(@PathVariable UUID paymentId) {
+        log.debug("GET /api/v1/payments/{}", paymentId);
+        return ResponseEntity.ok(paymentService.getPayment(paymentId));
+    }
 //
 //    // ── GET /api/v1/payments ─────────────────────────────────────
 //    /**
